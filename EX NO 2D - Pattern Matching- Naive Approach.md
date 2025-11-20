@@ -1,45 +1,31 @@
+# EX 2D Pattern Matching using Naive Approach.
+## DATE : 20-11-2025
 
-# EX 1C Job Sequencing using Greedy Approach
-## DATE : 19-11-2025
 ## AIM:
 To write a Java program to for given constraints.
-Given an integer array nums and an integer k, return the number of pairs (i, j) where i < j such that |nums[i] - nums[j]| == k.
+Given text string with length n and a pattern with length m, the task is to prints all occurrences of pattern in text.
+Note: You may assume that n > m.
 
-The value of |x| is defined as:
+Examples: 
 
-x if x >= 0.
--x if x < 0.You're given N jobs, each with:
+Input:  text = "THIS IS A TEST TEXT", pattern = "TEST"
+Output: Pattern found at index 10
 
-A unique jobId
-
-A deadline (by which it must be completed)
-
-A profit (earned only if completed on or before the deadline)
-
-Each job:
-
-Takes exactly 1 unit of time
-
-Only one job can be done at a time
-
-Your goal is to maximize total profit while completing the maximum number of jobs possible within their deadlines.
-
+Input:  text =  "AABAACAADAABAABA", pattern = "AABA"
+Output: Pattern found at index 0, Pattern found at index 9, Pattern found at index 12
 ## Algorithm
 1. Start  
-2. Read the integer `n` (number of jobs).  
-3. For each job, input three values — `id`, `deadline`, and `profit` — and store them in an array of `Job` objects.  
-4. Sort the jobs in **descending order of profit** using a custom comparator.  
-5. Find the maximum deadline among all jobs to determine the total number of available time slots.  
-6. Create a boolean array `slot[]` of size `maxDeadline + 1` to track which time slots are filled.  
-7. Initialize `totalProfit = 0` and `countJobs = 0`.  
-8. For each job in the sorted list:  
-   - Check from its deadline down to 1 to find a free slot.  
-   - If a free slot is found, mark it as occupied (`slot[j] = true`).  
-   - Add the job’s profit to `totalProfit` and increment `countJobs`.  
-9. After scheduling all possible jobs, return the total number of jobs done (`countJobs`) and the total profit (`totalProfit`).  
-10. Print both values.  
-11. End  
-  
+2. Read the input string `text` and the `pattern` to be searched.  
+3. Find the lengths of both strings:  
+   - `n = length of text`  
+   - `m = length of pattern`  
+4. Loop through the text from index `i = 0` to `i <= n - m`:  
+   - For each position `i`, compare every character of the pattern with the corresponding character in the text.  
+   - If any character does not match, break out of the inner loop.  
+5. If all characters of the pattern match (`j == m`), print the index `i` where the pattern starts in the text.  
+6. Continue checking until the end of the text.  
+7. End  
+ 
 
 ## Program:
 ```
@@ -47,60 +33,37 @@ Your goal is to maximize total profit while completing the maximum number of job
 Developed by: Saranya S.
 Register Number:  212223220101
 */
-import java.util.*;
+import java.util.Scanner;
 
-public class JobScheduling {
+public class NaivePatternSearch {
 
-    static class Job {
-        int id, deadline, profit;
+    public static void search(String text, String pattern) {
+        int n = text.length();
+        int m = pattern.length();
 
-        Job(int id, int deadline, int profit) {
-            this.id = id;
-            this.deadline = deadline;
-            this.profit = profit;
-        }
-    }
-
-    public static int[] jobScheduling(Job[] jobs, int n) {
-        Arrays.sort(jobs, (a, b) -> b.profit - a.profit);
-
-        int maxDeadline = 0;
-        for (Job job : jobs) {
-            maxDeadline = Math.max(maxDeadline, job.deadline);
-        }
-
-        boolean[] slot = new boolean[maxDeadline + 1];
-        int totalProfit = 0;
-        int countJobs = 0;
-
-        for (Job job : jobs) {
-            for (int j = job.deadline; j > 0; j--) {
-                if (!slot[j]) {
-                    slot[j] = true;
-                    totalProfit += job.profit;
-                    countJobs++;
+        for (int i = 0; i <= n - m; i++) {
+            int j;
+            for (j = 0; j < m; j++) {
+                if (text.charAt(i + j) != pattern.charAt(j)) {
                     break;
                 }
             }
+            if (j == m) {
+                System.out.println("Pattern found at index " + i);
+            }
         }
-
-        return new int[]{countJobs, totalProfit};
     }
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        Job[] jobs = new Job[n];
+        Scanner scanner = new Scanner(System.in);
 
-        for (int i = 0; i < n; i++) {
-            int id = sc.nextInt();
-            int deadline = sc.nextInt();
-            int profit = sc.nextInt();
-            jobs[i] = new Job(id, deadline, profit);
-        }
+        String text = scanner.nextLine();
 
-        int[] result = jobScheduling(jobs, n);
-        System.out.println(result[0] + " " + result[1]);
+        String pattern = scanner.nextLine();
+
+        search(text, pattern);
+
+        scanner.close();
     }
 }
 
@@ -108,7 +71,7 @@ public class JobScheduling {
 
 ## Output:
 
-<img width="821" height="551" alt="image" src="https://github.com/user-attachments/assets/e59960d0-7182-4f2a-bead-6f588a1329ba" />
+<img width="1042" height="411" alt="image" src="https://github.com/user-attachments/assets/4fbde6a2-3110-4802-8d7e-116d13020d3d" />
 
 
 ## Result:
